@@ -73,7 +73,13 @@ export function useEmoji() {
     }
   )
 
+  const resetGame = () => {
+    gameInfo.pairsMatched = 0
+    gameInfo.pairsTotal = 0
+    loadRandomEmojis()
+  }
+
   onMounted(loadRandomEmojis)
 
-  return { emojis, flipEmoji, isMatching, gameInfo }
+  return { emojis, flipEmoji, isMatching, gameInfo, resetGame }
 }

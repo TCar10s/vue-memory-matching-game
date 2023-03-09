@@ -14,7 +14,7 @@ const isMatched = computed(() => ({ 'is-matched': prop.emoji.isMatched }))
 
 <template>
   <div class="card-container" :class="[isFlipped, isMatched]">
-    <span class="card card__back">{{ emoji.value }}</span>
+    <span class="card card__back"></span>
     <span class="card card__front">{{ emoji.value }}</span>
   </div>
 </template>

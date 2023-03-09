@@ -10,6 +10,6 @@ import GridCards from './components/GridCards.vue'
 
 <style scoped>
 .container {
-  width: 40rem
+  min-width: 40rem
 }
 </style>
