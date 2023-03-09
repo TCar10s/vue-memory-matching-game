@@ -13,12 +13,8 @@ const isMatched = computed(() => ({ 'is-matched': prop.emoji.isMatched }))
 </script>
 
 <template>
-  <div
-    class="card-container"
-    :class="[isFlipped, isMatched]"
-
-  >
-    <span class="card card__back"></span>
+  <div class="card-container" :class="[isFlipped, isMatched]">
+    <span class="card card__back">{{ emoji.value }}</span>
     <span class="card card__front">{{ emoji.value }}</span>
   </div>
 </template>
@@ -62,7 +58,7 @@ const isMatched = computed(() => ({ 'is-matched': prop.emoji.isMatched }))
 
   .card__front {
     opacity: 0.3;
-    transition: opacity .5s;
+    transition: opacity 0.5s;
   }
 }
 </style>

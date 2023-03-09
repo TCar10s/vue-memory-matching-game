@@ -2,18 +2,28 @@
 import { useEmoji } from '../composables/emoji.js'
 import CardEmoji from './CardEmoji.vue'
 
-const { emojis, flipEmoji, isMatching } = useEmoji()
-
+const { emojis, flipEmoji, isMatching, gameInfo } = useEmoji()
 </script>
 
 <template>
+  <section class="game-info">
+    <div class="pairs">
+      <meter class="meter" :value="gameInfo.pairsMatched" max="8" />
+      <span class="matched">
+        <dt>Pairs matched:</dt>
+        <dd>{{ gameInfo.pairsMatched }}/8</dd>
+      </span>
+    </div>
+
+    <div class="total-moves">
+      <dt>Total moves:</dt>
+      <dd>{{ gameInfo.pairsTotal }}</dd>
+    </div>
+  </section>
+
   <ul class="grid">
     <li class="grid__item" v-for="emoji in emojis" :key="emoji.id">
-      <CardEmoji
-        :emoji="emoji"
-        @click="flipEmoji(emoji)"
-        :class="{ notEvents: isMatching }"
-      />
+      <CardEmoji :emoji="emoji" @click="flipEmoji(emoji)" :class="{ notEvents: isMatching }" />
     </li>
   </ul>
 </template>
@@ -40,5 +50,42 @@ const { emojis, flipEmoji, isMatching } = useEmoji()
 
 .notEvents {
   pointer-events: none;
+}
+
+.meter {
+  background-image: none;
+  width: 100%;
+  font-size: 1.5rem;
+  display: block;
+
+  &::-webkit-meter-optimum-value {
+    transition: all 0.5s;
+    background: rgb(46 46 77);
+  }
+
+  &::-moz-meter-bar {
+    transition: all 0.5s;
+    background: rgb(46 46 77);
+  }
+}
+
+.game-info {
+  display: flex;
+  justify-content: space-between;
+  column-gap: 1rem;
+  color: #fff;
+
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 1rem;
+
+  margin-bottom: 1rem;
+}
+
+.pairs,
+.total-moves {
+  width: 100%;
+  background-color: #2e2e3e;
+  border-radius: 0.2rem;
+  padding: 0.5rem;
 }
 </style>

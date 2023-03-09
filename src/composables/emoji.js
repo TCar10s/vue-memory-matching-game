@@ -1,10 +1,14 @@
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
 import debounce from 'just-debounce-it'
 
 export function useEmoji() {
   const emojis = ref([])
   const selectedEmoji = ref(null)
   const isMatching = ref(false)
+  const gameInfo = reactive({
+    pairsMatched: 0,
+    pairsTotal: 0
+  })
 
   const loadRandomEmojis = () => {
     const emojiCharacters = [
@@ -28,9 +32,8 @@ export function useEmoji() {
 
     emojis.value = emojiCharacters
       .sort(() => Math.random() - 0.5)
-      .map((value, index) => ({
+      .map((value) => ({
         value,
-        id: index,
         isMatched: false,
         isFlipped: false
       }))
@@ -57,9 +60,11 @@ export function useEmoji() {
       if (!oldValue || !newVal) return
 
       isMatching.value = true
+      gameInfo.pairsTotal++
 
       if (newVal.value === oldValue.value) {
         matchingEmojis([newVal, oldValue])
+        gameInfo.pairsMatched++
       } else {
         flipEmojis([newVal, oldValue])
       }
@@ -70,5 +75,5 @@ export function useEmoji() {
 
   onMounted(loadRandomEmojis)
 
-  return { emojis, flipEmoji, isMatching }
+  return { emojis, flipEmoji, isMatching, gameInfo }
 }
