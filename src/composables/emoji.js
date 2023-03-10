@@ -4,10 +4,21 @@ import debounce from 'just-debounce-it'
 export function useEmoji() {
   const emojis = ref([])
   const selectedEmoji = ref(null)
-  const isMatching = ref(false)
   const gameInfo = reactive({
     pairsMatched: 0,
-    pairsTotal: 0
+    pairsTotal: 0,
+    isLoading: false
+  })
+  const actions = reactive({
+    flipEmoji: (emoji) => {
+      emoji.isFlipped = !emoji.isFlipped
+      selectedEmoji.value = emoji
+    },
+    resetGame: () => {
+      gameInfo.pairsMatched = 0
+      gameInfo.pairsTotal = 0
+      loadRandomEmojis()
+    }
   })
 
   const loadRandomEmojis = () => {
@@ -39,19 +50,13 @@ export function useEmoji() {
       }))
   }
 
-  const flipEmoji = (emoji) => {
-    emoji.isFlipped = !emoji.isFlipped
-    selectedEmoji.value = emoji
-  }
+  const changeStatus = debounce((emojis, type = '') => {
+    emojis.map((emoji) => {
+      if (type === 'match') emoji.isMatched = true
+      if (type === 'flip') emoji.isFlipped = false
+    })
 
-  const matchingEmojis = debounce((emojis) => {
-    emojis.map((emoji) => (emoji.isMatched = true))
-    isMatching.value = false
-  }, 500)
-
-  const flipEmojis = debounce((emojis) => {
-    emojis.map((emoji) => (emoji.isFlipped = false))
-    isMatching.value = false
+    gameInfo.isLoading = false
   }, 500)
 
   watch(
@@ -59,27 +64,21 @@ export function useEmoji() {
     (newVal, oldValue) => {
       if (!oldValue || !newVal) return
 
-      isMatching.value = true
+      gameInfo.isLoading = true
       gameInfo.pairsTotal++
 
       if (newVal.value === oldValue.value) {
-        matchingEmojis([newVal, oldValue])
+        changeStatus([newVal, oldValue], 'match')
         gameInfo.pairsMatched++
       } else {
-        flipEmojis([newVal, oldValue])
+        changeStatus([newVal, oldValue], 'flip')
       }
 
       selectedEmoji.value = null
     }
   )
 
-  const resetGame = () => {
-    gameInfo.pairsMatched = 0
-    gameInfo.pairsTotal = 0
-    loadRandomEmojis()
-  }
-
   onMounted(loadRandomEmojis)
 
-  return { emojis, flipEmoji, isMatching, gameInfo, resetGame }
+  return { emojis, actions, gameInfo }
 }

@@ -2,7 +2,7 @@
 import { useEmoji } from '../composables/emoji.js'
 import CardEmoji from './CardEmoji.vue'
 
-const { emojis, flipEmoji, isMatching, gameInfo, resetGame } = useEmoji()
+const { emojis, actions, gameInfo } = useEmoji()
 </script>
 
 <template>
@@ -23,11 +23,15 @@ const { emojis, flipEmoji, isMatching, gameInfo, resetGame } = useEmoji()
 
   <ul class="grid">
     <li class="grid__item" v-for="emoji in emojis" :key="emoji.id">
-      <CardEmoji :emoji="emoji" @click="flipEmoji(emoji)" :class="{ notEvents: isMatching }" />
+      <CardEmoji
+        :emoji="emoji"
+        @click="actions.flipEmoji(emoji)"
+        :class="{ notEvents: gameInfo.isLoading }"
+      />
     </li>
   </ul>
 
-  <button class="btn" @click="resetGame">Reset game</button>
+  <button class="btn" @click="actions.resetGame">Reset game</button>
 </template>
 
 <style scoped lang="scss">
@@ -91,13 +95,13 @@ const { emojis, flipEmoji, isMatching, gameInfo, resetGame } = useEmoji()
 
 .btn {
   margin-top: 1rem;
-  padding: .75rem 1rem;
+  padding: 0.75rem 1rem;
 
   font-size: 1rem;
   color: #fff;
   background-color: #31314c;
 
-  border-radius: .2rem;
+  border-radius: 0.2rem;
   border-style: none;
   cursor: pointer;
 }
