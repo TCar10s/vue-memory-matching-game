@@ -1,10 +1,26 @@
-# Match Pairs Vue
+# 📌 Match Pairs Vue
 
-Match Pairs Vue es un juego de parejas desarrollado con Vue.js. El objetivo del juego es encontrar todas las parejas de números iguales en un tablero de 8x8. El jugador gana cuando encuentra todas las parejas.
+Match Pairs Vue es un juego de parejas desarrollado con Vue.js.
+El objetivo del juego es encontrar todas las parejas de números iguales en
+un tablero de 8x8. El jugador gana cuando encuentra todas las parejas.
 
-Este proyecto usa el marco Vite para desarrollar, construir y previsualizar el proyecto. Además, se usan herramientas como ESLint, Prettier y Just Debounce It para garantizar la calidad del código.
+Este proyecto usa el marco Vite para desarrollar, construir y previsualizar
+el proyecto. Además, se usan herramientas como ESLint, Prettier y Just Debounce
+It para garantizar la calidad del código.
 
-## Dependencias
+### Para instalar las dependencias
+
+```bash
+npm install
+```
+
+### Para iniciar el servidor de desarrollo
+
+```bash
+npm run dev
+```
+
+### Dependencias
 
 - just-debounce-it: ^3.2.0
 - vue: ^3.2.47
